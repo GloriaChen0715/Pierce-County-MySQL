@@ -5,7 +5,8 @@ Average sale price over the year
 
 
 ```
-select year(sale_date) Year, sum(Sale_Price) as Total_sales
+select  year(sale_date) Year, 
+	sum(Sale_Price) as Total_sales
 from sale_df
 group by 1
 order by 2 desc;
@@ -87,4 +88,45 @@ order by 2 desc;
 |	C FUNCTIONAL	|	99500	|
 |	R STREETS	|	46250	|
 
+
+## Query 3
+The average difference between current market value and sales price at the sales event
+
+```
+select year(s.sale_date) as sale_year, 
+avg(Total_Market_Value_Current_Year - s.sale_price) as Avg_price_difference
+from tax_df t
+join sale_df s on t.Parcel_Number = s.Parcel_Number
+group by 1
+order by 2 desc;
+
+```
+
+|sale_year | Avg_price_difference|
+|-----------|-----------|
+|	2000	|	275410.7692	|
+|	1999	|	238040.9474	|
+|	1998	|	225573.3333	|
+|	2001	|	163827.2727	|
+|	1997	|	149950	|
+|	2003	|	145458	|
+|	2008	|	116214.8571	|
+|	2005	|	91655.6111	|
+|	2015	|	68346.6667	|
+|	2018	|	34064.4	|
+|	2002	|	33200	|
+|	2019	|	-11466.8462	|
+|	2009	|	-90820.5	|
+|	2021	|	-141648.75	|
+|	2012	|	-162260.8182	|
+|	2014	|	-163962	|
+|	2013	|	-211662.6429	|
+|	2020	|	-213568.75	|
+|	2011	|	-281195.1538	|
+|	2004	|	-354599.3529	|
+|	2007	|	-444029.9333	|
+|	2016	|	-477959.05	|
+|	2006	|	-674992.2	|
+|	2017	|	-836626.4706	|
+|	2010	|	-3315342	|
 
