@@ -40,3 +40,51 @@ order by 2 desc;
 |	1997	|	32839184	|
 
 
+## Query 2
+Median of sales price by attribute
+
+```
+with a as (SELECT l.attribute, s.Sale_Price 
+   	 from sale_df s
+	inner join land_df l on s.Parcel_Number = l.Parcel_Number)
+  
+SELECT
+   t.attribute, AVG(t.sale_price) as median_sale
+FROM
+   (SELECT attribute, sale_price,
+    row_number() over(partition by attribute order by sale_price) rn,
+    count(*) over(partition by attribute) cnt
+    from a
+    ) t
+where rn in ( FLOOR((cnt + 1) / 2), FLOOR( (cnt + 2) / 2) )
+group by attribute
+order by 2 desc;
+
+```
+|attribute|	median_sale |
+|-----------|-----------|
+|	C MA 4 TACOMA N	|	17502500	|
+|	C MA 9 CENTRAL	|	14000000	|
+|	C MA 8 PORT	|	3500000	|
+|	C MA 3 PENINSULA	|	3268000	|
+|	C MA 5 NORTH	|	750000	|
+|	C STREETS	|	480000	|
+|	C UTILITIES	|	434875	|
+|	R WATERFRONT	|	429500	|
+|	C AMENITIES	|	421750	|
+|	C ECONOMIC	|	375000	|
+|	C MA 7 CBD	|	314900	|
+|	R VIEW	|	305000	|
+|	R SIZE	|	287450	|
+|	R AMENITIES	|	265000	|
+|	R FUNCTIONAL	|	239975	|
+|	R ECONOMIC	|	233900	|
+|	R UTILITIES	|	204120	|
+|	C ZONING	|	172000	|
+|	C USE	|	170000	|
+|	C MA 2 TACOMA S	|	100000	|
+|	R SITE DEVELOPMENT	|	100000	|
+|	C FUNCTIONAL	|	99500	|
+|	R STREETS	|	46250	|
+
+
