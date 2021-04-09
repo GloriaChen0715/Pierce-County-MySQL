@@ -3,7 +3,6 @@
 ## Query 1
 Average sale price over the year
 
-
 ```
 select  year(sale_date) Year, 
 	sum(Sale_Price) as Total_sales
@@ -41,6 +40,7 @@ order by 2 desc;
 |	1997	|	32839184	|
 
 
+
 ## Query 2
 Median of sales price by attribute
 
@@ -62,6 +62,7 @@ group by attribute
 order by 2 desc;
 
 ```
+
 |Property_attribute|	median_sale_price |
 |-----------|-----------|
 |	C MA 4 TACOMA N	|	17502500	|
@@ -87,6 +88,7 @@ order by 2 desc;
 |	R SITE DEVELOPMENT	|	100000	|
 |	C FUNCTIONAL	|	99500	|
 |	R STREETS	|	46250	|
+
 
 
 ## Query 3
@@ -131,7 +133,9 @@ order by 2 desc;
 |	2010	|	-3315342	|
 
 
+
 ## Query 4
+Categorize house size into small, medium, and large, and average sale price and average current market value by house size
 
 ```
 with house_size as (
@@ -141,16 +145,16 @@ with house_size as (
 	else 'Medium' end as House_size
 	from appraisal_df ) 
 
-select h.House_size, avg(s.sale_price) avg_sale_price, avg(t.Total_Market_Value_Current_Year) avg_current_market_value
+select h.House_size, 
+	avg(s.sale_price) avg_sale_price, 
+	avg(t.Total_Market_Value_Current_Year) avg_current_market_value
 from house_size h
 join tax_df t on h.Parcel_Number = t.Parcel_Number
 join sale_df s on s.Parcel_Number = t.Parcel_Number
 group by 1;
 ```
 
-
-
-| House_Size| avg_sale_price | avg_current_market_value|                                                                                                                             
+| House_Size| avg_sale_price | avg_current_market_value|    
 |-----------|-------------|---|
 |Small|236348.5714|283314.2857|
 |Large|3269.0000|75400.0000|
@@ -159,11 +163,14 @@ group by 1;
 
 
 ## Query 5
+The average sale price by appraisal account type
 
 ```
-select a.Appraisal_Account_Type, avg(s.Sale_price) as Avg_Sale_Price
+select a.Appraisal_Account_Type, 
+	avg(s.Sale_price) as Avg_Sale_Price
 from appraisal_df as a 
-inner join sale_df as s on a.Parcel_Number = s.Parcel_number
+inner join sale_df as s 
+on a.Parcel_Number = s.Parcel_number
 group by Appraisal_Account_Type;
 ```
 
@@ -180,20 +187,20 @@ group by Appraisal_Account_Type;
 
 
 ## Query 6
+Comparison of average sale price of current quarter and of previous quarter
 
 ```
 select year(Sale_Date) as Year , 
-		QUARTER(Sale_Date) as Qrt, 
-		avg(Sale_Price) as Current_Sale_Price, 
-        		lag(avg(Sale_Price), 1) over ( ORDER BY year(Sale_Date) , QUARTER(Sale_Date)) Previous_Qrt_sales,
-		LEAD(avg(Sale_Price), 1) over ( ORDER BY year(Sale_Date) , QUARTER(Sale_Date)) Next_Qrt_sales
+	QUARTER(Sale_Date) as Qrt, 
+	avg(Sale_Price) as Current_Sale_Price, 
+        lag(avg(Sale_Price), 1) over ( ORDER BY year(Sale_Date) , QUARTER(Sale_Date)) Previous_Qrt_sales,
 from sale_df
 where year(Sale_Date) in (2019,2020,2021)
 group by Year, Qrt
 order by Year desc, Qrt desc
 ```
 
-| Year        | Qrt | Current_Sale_Price       | Previous_Qrt_Sales |                                                                                                                                    
+| Year   | Qrt | Current_Sale_Price  | Previous_Qrt_Sales |                                                                                                                                    
 |-----------|-------------|------|-----|
 |2021|1|831410.6849|1264245.9603|
 |2020|4|1264245.9603|736341.7518|
