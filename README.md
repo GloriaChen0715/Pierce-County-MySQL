@@ -49,7 +49,7 @@ with a as (SELECT l.attribute, s.Sale_Price
 	inner join land_df l on s.Parcel_Number = l.Parcel_Number)
   
 SELECT
-   t.attribute, AVG(t.sale_price) as median_sale
+   t.attribute as Property_attribute, AVG(t.sale_price) as median_sale_price
 FROM
    (SELECT attribute, sale_price,
     row_number() over(partition by attribute order by sale_price) rn,
@@ -61,7 +61,7 @@ group by attribute
 order by 2 desc;
 
 ```
-|attribute|	median_sale |
+|Property_attribute|	median_sale_price |
 |-----------|-----------|
 |	C MA 4 TACOMA N	|	17502500	|
 |	C MA 9 CENTRAL	|	14000000	|
