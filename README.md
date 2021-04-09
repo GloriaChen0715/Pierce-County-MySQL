@@ -10,5 +10,6 @@ from sale_df
 group by 1
 order by 2 desc;
 ```
-Year | Total_sales
-2020 | 1000
+| Year        | Total_sales |                                                                                                                                     
+|-----------|-------------|
+|2020|1000|
