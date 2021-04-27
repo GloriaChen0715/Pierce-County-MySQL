@@ -45,12 +45,14 @@ order by 2 desc;
 Median of sales price by attribute
 
 ```
-with a as (SELECT l.attribute, s.Sale_Price 
-   	 from sale_df s
-	inner join land_df l on s.Parcel_Number = l.Parcel_Number)
+with a as (SELECT l.attribute, 
+		  s.Sale_Price 
+   	   from sale_df s
+	   inner join land_df l on s.Parcel_Number = l.Parcel_Number)
   
 SELECT
-   t.attribute as Property_attribute, AVG(t.sale_price) as median_sale_price
+   t.attribute as Property_attribute, 
+   AVG(t.sale_price) as median_sale_price
 FROM
    (SELECT attribute, sale_price,
     row_number() over(partition by attribute order by sale_price) rn,
